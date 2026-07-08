@@ -8,6 +8,10 @@ wheels/
 
 # Data
 data/*
+logs/*
+
+# Slurm-related
+run.slurm
 
 # Virtual environments
 .venv
