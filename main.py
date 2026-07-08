@@ -1,12 +1,13 @@
 import argparse
 import os
-os.environ['HF_HOME'] = '/nfs/turbo/umms-vgvinodv2/users/zzhaozhe/cache'
+os.environ['HF_HOME'] = '/nfs/turbo/umms-vgvinodv/users/zzhaozhe/cache'
 import random
 import torch
 import numpy as np
 from scipy import stats
 
 from src.io import run_io
+from src.tot import run_tot
 from src.input_utils import DATA_FOLDER
 
 def mean_ci_95(numbers):
@@ -33,6 +34,13 @@ def main(args):
                data_path=data_path, 
                thinking = args.thinking,
                n_return=args.n_path)
+        
+    if args.method == "tot":
+        accuracy, failure_rate = run_tot(
+            data_path=data_path,
+            model_name=args.model_name, 
+            thinking = args.thinking,
+            n_return=args.n_path)
     
     return accuracy, failure_rate
     
