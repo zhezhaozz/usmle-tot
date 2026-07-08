@@ -69,7 +69,12 @@ if __name__ == "__main__":
     acc_ci = mean_ci_95(metrics)
     fail_ci = mean_ci_95(failure_rate)
 
-    with open(f"./data/{args.model_name}_{args.experiment}_{args.thinking}_results.txt", "w") as file:
+    if args.thinking:
+        name_tag = "thinking"
+    else:
+        name_tag = "no_thinking"
+
+    with open(f"./data/{args.model_name}_{args.experiment}_{args.method}_{name_tag}_results.txt", "w") as file:
         file.write(f"Accuracy: {acc_ci}")
         file.write(f"Unparsed responses: {fail_ci}")
         file.write(f"The {args.experiment} experiment with method - {args.method} using {args.model_name} is finished")

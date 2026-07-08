@@ -1,3 +1,7 @@
-uv run main.py --experiment na --thinking
-uv run main.py --experiment na --model_name qwen3_14b --thinking
-uv run main.py --experiment na --model_name gemma4_12b --thinking
+uv run main.py --method tot
+uv run main.py --model_name qwen3_14b --thinking --method tot
+uv run main.py --model_name gemma4_12b --thinking --method tot
+
+uv run main.py --experiment na --method tot
+uv run main.py --experiment na --model_name qwen3_14b --thinking --method tot
+uv run main.py --experiment na --model_name gemma4_12b --thinking --method tot
