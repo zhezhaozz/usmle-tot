@@ -1,6 +1,6 @@
 import argparse
 import os
-os.environ['HF_HOME'] = '/nfs/turbo/umms-vgvinodv/users/zzhaozhe/cache'
+os.environ['HF_HOME'] = '/nfs/turbo/umms-vgvinodv2/users/zzhaozhe/cache'
 import random
 import torch
 import numpy as np
@@ -60,9 +60,9 @@ if __name__ == "__main__":
     
     acc_ci = mean_ci_95(metrics)
     fail_ci = mean_ci_95(failure_rate)
-    print()
-    print(f"Accuracy: {acc_ci}")
-    print(f"Unparsed responses: {fail_ci}")
 
-    print(f"The {args.experiment} experiment with method - {args.method} using {args.model_name} is finished")
-    print("Results are shown above")
+    with open(f"./data/{args.model_name}_{args.experiment}_{args.thinking}_results.txt", "w") as file:
+        file.write(f"Accuracy: {acc_ci}")
+        file.write(f"Unparsed responses: {fail_ci}")
+        file.write(f"The {args.experiment} experiment with method - {args.method} using {args.model_name} is finished")
+        file.write("Results are shown above")
