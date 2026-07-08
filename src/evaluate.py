@@ -30,10 +30,7 @@ def evaluate(dataset, predictions):
                 correct += 1
 
     accuracy = correct / N if N > 0 else 0.0
+    failure_rate = failure / N if N > 0 else 0.0
 
-    print()
-    print(f"Total evaluated: {N}")
-    print(f"Correct: {correct}")
-    print(f"Accuracy: {accuracy:.4f}")
-    print(f"Unparsed responses: {failure}")
+    return accuracy, failure_rate
 

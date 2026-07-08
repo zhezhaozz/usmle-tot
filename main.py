@@ -1,23 +1,41 @@
 import argparse
 import os
 os.environ['HF_HOME'] = '/nfs/turbo/umms-vgvinodv/users/zzhaozhe/cache'
+import random
+import torch
+import numpy as np
+from scipy import stats
 
 from src.io import run_io
 from src.input_utils import DATA_FOLDER
 
+def mean_ci_95(numbers):
+    data = np.array(numbers, dtype=float)
+    n = len(data)
+
+    mean = np.mean(data)
+    sem = stats.sem(data)
+
+    ci_low, ci_high = stats.t.interval(
+        confidence=0.95,
+        df=n - 1,
+        loc=mean,
+        scale=sem
+    )
+
+    return f"{mean:.2f} ({ci_low:.2f}, {ci_high:.2f})"
+
 def main(args):
     data_path = f"{DATA_FOLDER}/{args.experiment}/phrases_no_exclude_{args.data}.jsonl"
     
-    print(f"Starting {args.experiment} experiment with method: {args.method} using {args.model_name}")
-
     if args.method == "io":
-        run_io(args.model_name, 
+        accuracy, failure_rate = run_io(args.model_name, 
                data_path=data_path, 
                thinking = args.thinking,
                n_return=args.n_path)
     
-    print(f"The {args.experiment} experiment with method - {args.method} using {args.model_name} is finished")
-    print("Results are shown above")
+    return accuracy, failure_rate
+    
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -28,4 +46,23 @@ if __name__ == "__main__":
     parser.add_argument("--thinking", action="store_true")
     parser.add_argument("--data", type=str, choices=["dev", "testt"], default="dev")
     args = parser.parse_args()
-    main(args)
+
+    print(f"Starting {args.experiment} experiment with method: {args.method} using {args.model_name}")
+    
+    metrics = []
+    failures = []
+    for i in range(5):
+        random.seed(2*(i^3) + 42)
+        torch.manual_seed(2*(i^3) + 42)
+        accuracy, failure_rate = main(args)
+        metrics.append(accuracy)
+        failures.append(failure_rate)
+    
+    acc_ci = mean_ci_95(metrics)
+    fail_ci = mean_ci_95(failure_rate)
+    print()
+    print(f"Accuracy: {acc_ci}")
+    print(f"Unparsed responses: {fail_ci}")
+
+    print(f"The {args.experiment} experiment with method - {args.method} using {args.model_name} is finished")
+    print("Results are shown above")

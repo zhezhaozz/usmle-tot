@@ -86,13 +86,11 @@ def clean_json_response(response, mode="generation"):
             #print(response)
             print(match[-1])
             print(json_str)
+            return None
     else:
         print("No JSON object found in the input string.")
         print(response)
-        if mode in ["tot_termination", "tot_generation"]:
-            return "invalid", "invalid", "invalid"
-        else:
-            return "invalid", "invalid"
+        return None
 
 def parse_json_output(content, mode="generation"):
     content = fix_json_format_response(content)
@@ -102,6 +100,7 @@ def parse_json_output(content, mode="generation"):
     else:
         print("Cannot decode json output")
         print(content)
+        return None
 
 
 

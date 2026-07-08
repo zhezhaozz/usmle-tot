@@ -31,7 +31,8 @@ def run_io(model_name,
         result = parse_json_output(output["content"])
         results.append(result)
     
-    evaluate(dataset, results)
+    accuracy, failure_rate = evaluate(dataset, results)
+    return accuracy, failure_rate
 
 
 
