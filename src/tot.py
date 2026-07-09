@@ -1,11 +1,9 @@
 import os
 os.environ['HF_HOME'] = '/nfs/turbo/umms-vgvinodv/users/zzhaozhe/cache'
-import pandas as pd
 
 from tqdm import tqdm
 from collections import Counter
 from itertools import chain
-from transformers import AutoModelForCausalLM
 
 from src.configure_llm import *
 from src.input_utils import load_dataset, construct_prompt
@@ -155,7 +153,7 @@ class tot_classifier:
         answer = parse_json_output(self.terminator(self.note, thoughts=chosen_reasonings[-1]), mode='tot_termination')
         
         if answer:
-            return answer, chosen_reasonings
+            return answer
         else:
             return None
 
@@ -171,7 +169,6 @@ def run_tot(model_name,
 
     # construct model inputs
     results = []
-    reasonings = []
     for dt in tqdm(dataset):
         classifier = tot_classifier(
             dt,
@@ -182,7 +179,7 @@ def run_tot(model_name,
             n_vote=n_eval,
             n_choose=1
         )
-        pred,reasoning = classifier.run()
+        pred = classifier.run()
         results.append(pred)
     
     accuracy, failure_rate = evaluate(dataset, results)
