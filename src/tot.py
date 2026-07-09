@@ -68,27 +68,27 @@ class tot_classifier:
 
     def plan_generator(self, text): 
         chat = construct_prompt(tot_generation_prompt, text, mode="tot_generation")
-        output = prompt_model(chat, self.n_gen_path)
+        output = prompt_model(self.model_name, chat, self.n_gen_path)
         output = [ot["content"] for ot in output]
         return output
 
     def reasoning_generator(self, text, reasoning_steps = None):
         chat = construct_prompt(tot_reasoning_generation_prompt, text, mode="tot_reasoning_generation", tot_add=reasoning_steps)
-        output = prompt_model(chat, self.n_gen_path)
+        output = prompt_model(self.model_name, chat, self.n_gen_path)
         output = [ot["content"] for ot in output]
         return output
     
     def evaluator(self, text, mode, thoughts=None):
         chat = construct_prompt(tot_evaluation_prompt, text, mode, tot_add=thoughts)
-        output = prompt_model(chat, self.n_vote)
+        output = prompt_model(self.model_name, chat, self.n_vote)
         output = [ot["content"] for ot in output]
         return output
         
 
     def terminator(self, text, thoughts=None):
         chat = construct_prompt(tot_termination_prompt, text, mode="tot_termination", tot_add=thoughts)
-        output = prompt_model(chat, 1)
-        return output[-1]["content"]
+        output = prompt_model(self.model_name, chat, 1)
+        return output["content"]
     
     def propose_reasoning(self, proposed_step):
         reasoning_output = self.reasoning_generator(self.note, proposed_step)
@@ -163,7 +163,7 @@ class tot_classifier:
 def run_tot(model_name, 
             data_path,
             thinking, 
-            do_sample,
+            do_sample=True,
             n_return=5,
             n_eval=5):
     # load dataset
