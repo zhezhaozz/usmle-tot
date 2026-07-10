@@ -17,6 +17,8 @@ def mean_ci_95(numbers):
     n = len(data)
 
     mean = np.mean(data)
+    if mean == 0.0:
+        return "0 (0.0, 0.0)"
     sem = stats.sem(data)
 
     ci_low, ci_high = stats.t.interval(
@@ -77,7 +79,7 @@ if __name__ == "__main__":
         name_tag = "no_thinking"
 
     with open(f"./data/{args.model_name}_{args.experiment}_{args.method}_{name_tag}_results.txt", "w") as file:
-        file.write(f"Accuracy: {acc_ci}")
-        file.write(f"Unparsed responses: {fail_ci}")
-        file.write(f"The {args.experiment} experiment with method - {args.method} using {args.model_name} is finished")
+        file.write(f"Accuracy: {acc_ci}\n")
+        file.write(f"Unparsed responses: {fail_ci}\n")
+        file.write(f"The {args.experiment} experiment with method - {args.method} using {args.model_name} is finished\n")
         file.write("Results are shown above")

@@ -13,7 +13,7 @@ def run_io(model_name,
            thinking=False, 
            n_return=5):
 
-    dataset = load_dataset(data_path)[:5]
+    dataset = load_dataset(data_path)
     
     results = []
     for case in tqdm(dataset):
