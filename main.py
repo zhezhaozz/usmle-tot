@@ -11,7 +11,9 @@ from src.tot import run_tot
 from src.input_utils import DATA_FOLDER
 
 def mean_ci_95(numbers):
+    print(numbers)
     data = np.array(numbers, dtype=float)
+    print(data)
     n = len(data)
 
     mean = np.mean(data)
@@ -67,7 +69,7 @@ if __name__ == "__main__":
         failures.append(failure_rate)
     
     acc_ci = mean_ci_95(metrics)
-    fail_ci = mean_ci_95(failure_rate)
+    fail_ci = mean_ci_95(failures)
 
     if args.thinking:
         name_tag = "thinking"
