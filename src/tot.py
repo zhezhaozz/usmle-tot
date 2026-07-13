@@ -1,6 +1,3 @@
-import os
-os.environ['HF_HOME'] = '/nfs/turbo/umms-vgvinodv/users/zzhaozhe/cache'
-
 from tqdm import tqdm
 from collections import Counter
 from itertools import chain
