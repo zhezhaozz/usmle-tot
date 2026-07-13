@@ -1,6 +1,5 @@
 import argparse
 import os
-os.environ['HF_HOME'] = '/nfs/turbo/umms-vgvinodv/users/zzhaozhe/cache'
 import random
 import torch
 import numpy as np
@@ -9,6 +8,18 @@ from scipy import stats
 from src.io import run_io
 from src.tot import run_tot
 from src.input_utils import DATA_FOLDER
+
+def is_armis2() -> bool:
+    checks = [
+        os.environ.get("SLURM_CLUSTER_NAME", ""),
+        os.environ.get("HOSTNAME", ""),
+    ]
+    return any("armis2" in x.lower() for x in checks)
+
+if is_armis2():
+    os.environ['HF_HOME'] = '/nfs/turbo/umms-vgvinodv2/users/zzhaozhe/cache'
+else:
+    os.environ['HF_HOME'] = '/nfs/turbo/umms-vgvinodv/users/zzhaozhe/cache'
 
 def mean_ci_95(numbers):
     print(numbers)
